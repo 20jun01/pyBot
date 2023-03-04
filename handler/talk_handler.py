@@ -1,5 +1,7 @@
 from .functions import open_ai
 
+system_settings = ""
+
 with open("system_setting.txt", "r") as f:
     system_settings = f.read()
 
@@ -20,3 +22,15 @@ def generate_talk_cont(message: str) -> str:
 def talk_handler(past_messages: str, message: str):
     new_message, messages = open_ai.completion(message, system_settings, past_messages)
     return new_message, messages
+
+def add_system_settings(settings: str):
+    global system_settings
+    system_settings += settings
+    with open("system_setting.txt", "w") as f:
+        f.write(system_settings)
+    
+def new_system_settings(settings: str):
+    global system_settings
+    system_settings = settings
+    with open("system_setting.txt", "w") as f:
+        f.write(system_settings)

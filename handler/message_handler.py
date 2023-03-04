@@ -34,6 +34,26 @@ def message_created_response(body: dict) -> Response:
         message += talk_contents.replace("@", "`@`")
         response_handler.post_to_traq(message, body["message"]["channelId"])
         return Response(status_code=204)
+    
+    if message_sent.startswith("/add"):
+        message_sent = message_sent.replace("/add", "")
+        message = "@" + body["message"]["user"]["name"] + \
+            " 私はこんな人なんだね!!教えてくれてありがとう!!\n"
+        talk_handler.add_system_settings(message_sent)
+        response_handler.post_to_traq(message, body["message"]["channelId"])
+
+    if message_sent.startswith("/new"):
+        message_sent = message_sent.replace("/new", "")
+        message = "@" + body["message"]["user"]["name"] + \
+            " 新しい私になったよ!!これからよろしくね!!\n"
+        talk_handler.new_system_settings(message_sent)
+        response_handler.post_to_traq(message, body["message"]["channelId"])
+
+    if message_sent == "/del":
+        message = "@" + body["message"]["user"]["name"] + \
+            " 私は何者でもなかったんだね...:sad_blob_cat_girl:\n"
+        talk_handler.new_system_settings("")
+        response_handler.post_to_traq(message, body["message"]["channelId"])
 
     else:
         message = body["message"]["user"]["displayName"] + \
@@ -53,6 +73,9 @@ def create_response_message(message_type: str) -> str:
         message += "#### `/cont + {message}`: 前の続きを話そうか\n"
         message += "#### `/join`: 君と話しを始めたいって思えるよ\n"
         message += "#### `/leave`: そんなこと言わないでよ...\n"
+        message += "#### `/add + {setting}`: キャラの設定を追加するよ\n"
+        message += "#### `/new + {setting}`: キャラの設定を新しくするよ\n"
+        message += "#### `/del`: 私の人格を消すよ...\n"
         message += "#### `{message}`: いっぱいお話ししたいな\n"
     elif message_type == "leave":
         message += ":snailchan_jito.ex-large.ex-large:"

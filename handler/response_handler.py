@@ -8,8 +8,6 @@ TRAQ_API_URL = os.environ["TRAQ_URL"]
 BOT_ID = os.environ["BOT_ID"]
 
 # textをchannel_idに投稿する関数*3
-
-
 def post_to_traq(text: str, channel_id: str) -> None:
     url: str = f"{TRAQ_API_URL}/channels/{channel_id}/messages"
     data: dict = {
