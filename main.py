@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Request, Response
 from handler import talk_handler, verification_handler
-from models import TalkRequest, TalkResponse
+from models.request_model import TalkRequest
+from models.response_model import TalkResponse
 
 with open("system_setting.txt", "r") as f:
     system_settings = f.read()
