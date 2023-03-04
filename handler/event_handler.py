@@ -1,5 +1,5 @@
 from fastapi import Response, HTTPException
-from message_handler import message_created_response
+from .message_handler import message_created_response
 
 def event_handler(event: str, body: dict) -> Response:
     if event == "PING":
