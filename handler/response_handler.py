@@ -27,8 +27,6 @@ def post_to_traq(text: str, channel_id: str) -> None:
     print(response_body)
 
 # channel_idに参加する関数*4
-
-
 def join_channel(channel_id: str) -> None:
     url: str = f"{TRAQ_API_URL}/bots/{BOT_ID}/actions/join"
     data: dict = {
@@ -42,12 +40,8 @@ def join_channel(channel_id: str) -> None:
 
     r: requests.Response = requests.post(
         url, data=json.dumps(data), headers=headers)
-    response_body = r.json()
-    print(response_body)
 
 # channel_idから退出する関数*5
-
-
 def leave_channel(channel_id: str) -> None:
     url: str = f"{TRAQ_API_URL}/bots/{BOT_ID}/actions/leave"
     data: dict = {
@@ -61,5 +55,3 @@ def leave_channel(channel_id: str) -> None:
 
     r: requests.Response = requests.post(
         url, data=json.dumps(data), headers=headers)
-    response_body = r.json()
-    print(response_body)

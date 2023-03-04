@@ -20,7 +20,7 @@ def message_created_response(body: dict) -> Response:
         return Response(status_code=204)
 
     elif message_sent.startswith("@BOT_urturn_Talker /join"):
-        response_handler.join_channel(body["message"]["channelId"], )
+        response_handler.join_channel(body["message"]["channelId"])
         response_handler.post_to_traq(":oisu-1::oisu-2::oisu-3::oisu-4yoko:", body["message"]["channelId"])
         return Response(status_code=204)
 
