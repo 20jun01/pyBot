@@ -34,7 +34,7 @@ def message_created_response(body: dict) -> Response:
         message += talk_contents.replace("@", "`@`")
         response_handler.post_to_traq(message, body["message"]["channelId"])
         return Response(status_code=204)
-    
+
     elif message_sent.startswith("/add"):
         message_sent = message_sent.replace("/add", "")
         message = "@" + body["message"]["user"]["name"] + \
@@ -54,6 +54,57 @@ def message_created_response(body: dict) -> Response:
             " 私は何者でもなかったんだね...:sad_blob_cat_girl:\n"
         talk_handler.new_system_settings("")
         response_handler.post_to_traq(message, body["message"]["channelId"])
+
+    elif message_sent == "/show":
+        message = "@" + body["message"]["user"]["name"] + \
+            " 私の中身はこんな感じだよ！！\n"
+        message += "`" + talk_handler.system_settings + "`"
+        response_handler.post_to_traq(message, body["message"]["channelId"])
+
+    elif message_sent.startswith("/personal"):
+        message_sent = message_sent.replace("/personal", "")
+        user = body["message"]["user"]["name"]
+        if message_sent.startswith(" cont"):
+            message_sent = message_sent.replace("cont", "")
+            message = "@" + body["message"]["user"]["name"] + \
+                " もっと話したいんだね:okk:\n"
+            talk_contents = talk_handler.generate_talk_cont_personal(
+                message_sent, user)
+            message += talk_contents.replace("@", "`@`")
+            response_handler.post_to_traq(
+                message, body["message"]["channelId"])
+            return Response(status_code=204)
+        elif message_sent.startswith(" add"):
+            message_sent = message_sent.replace("add", "")
+            message = "@" + body["message"]["user"]["name"] + \
+                " 私はこんな人なんだね！！ 教えてくれてありがとう！！\n"
+            talk_handler.add_settings_personal(message_sent, user)
+            response_handler.post_to_traq(
+                message, body["message"]["channelId"])
+        elif message_sent.startswith(" new"):
+            message_sent = message_sent.replace("new", "")
+            message = "@" + body["message"]["user"]["name"] + \
+                " 新しい私になったよ！！ これからよろしくね！！\n"
+            talk_handler.new_settings_personal(message_sent, user)
+            response_handler.post_to_traq(
+                message, body["message"]["channelId"])
+        elif message_sent == " del":
+            message = "@" + body["message"]["user"]["name"] + \
+                " 私は何者でもなかったんだね...:sad_blob_cat_girl:\n"
+            talk_handler.new_settings_personal("", user)
+            response_handler.post_to_traq(
+                message, body["message"]["channelId"])
+        elif message_sent == " show":
+            message = "@" + body["message"]["user"]["name"] + \
+                " 私の中身はこんな感じだよ！！\n"
+            message += "`" + talk_handler.settings_personal(user) + "`"
+            response_handler.post_to_traq(
+                message, body["message"]["channelId"])
+        else:
+            message = body["message"]["user"]["displayName"] + \
+                "さん :oisu-1::oisu-2::oisu-3::oisu-4yoko:\n"
+            response_handler.post_to_traq(
+                message, body["message"]["channelId"])
 
     else:
         message = body["message"]["user"]["displayName"] + \
@@ -76,7 +127,10 @@ def create_response_message(message_type: str) -> str:
         message += "#### `/add + {setting}`: キャラの設定を追加するよ\n"
         message += "#### `/new + {setting}`: キャラの設定を新しくするよ\n"
         message += "#### `/del`: 私の人格を消すよ...\n"
+        message += "#### `/show`: 私の中身を見せてくれるよ\n"
         message += "#### `{message}`: いっぱいお話ししたいな\n"
+        message += "#### `/personal + {command}`: 君だけのために話すよ\n"
+        message += "ex) `/personal add {setting}`\n"
     elif message_type == "leave":
         message += ":snailchan_jito.ex-large.ex-large:"
     elif message_type == "join":
