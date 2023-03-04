@@ -28,15 +28,17 @@ def message_created_response(body: dict) -> Response:
 
     if message_sent.startswith("/cont"):
         message = "@" + body["message"]["user"]["name"] + \
-            " もっと話したいんだね:okk:\n" + \
-            talk_handler.generate_talk_cont(message_sent)
+            " もっと話したいんだね:okk:\n"
+        talk_contents = talk_handler.generate_talk_cont(message_sent)
+        message += talk_contents.replace("@", "")
         response_handler.post_to_traq(message, body["message"]["channelId"])
         return Response(status_code=204)
 
     else:
         message = body["message"]["user"]["displayName"] + \
-            "さん :oisu-1::oisu-2::oisu-3::oisu-4yoko:\n" + \
-            talk_handler.generate_talk(message_sent)
+            "さん :oisu-1::oisu-2::oisu-3::oisu-4yoko:\n"
+        talk_contents = talk_handler.generate_talk(message_sent)
+        message += talk_contents.replace("@", "")
         response_handler.post_to_traq(message, body["message"]["channelId"])
         return Response(status_code=204)
 
