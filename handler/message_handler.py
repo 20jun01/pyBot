@@ -27,6 +27,7 @@ def message_created_response(body: dict) -> Response:
         return Response(status_code=204)
 
     if message_sent.startswith("/cont"):
+        message_sent = message_sent.replace("/cont", "")
         message = "@" + body["message"]["user"]["name"] + \
             " もっと話したいんだね:okk:\n"
         talk_contents = talk_handler.generate_talk_cont(message_sent)
