@@ -26,7 +26,7 @@ def message_created_response(body: dict) -> Response:
         response_handler.post_to_traq(message, body["message"]["channelId"])
         return Response(status_code=204)
 
-    if message_sent.startswith("/cont"):
+    elif message_sent.startswith("/cont"):
         message_sent = message_sent.replace("/cont", "")
         message = "@" + body["message"]["user"]["name"] + \
             " もっと話したいんだね:okk:\n"
@@ -35,21 +35,21 @@ def message_created_response(body: dict) -> Response:
         response_handler.post_to_traq(message, body["message"]["channelId"])
         return Response(status_code=204)
     
-    if message_sent.startswith("/add"):
+    elif message_sent.startswith("/add"):
         message_sent = message_sent.replace("/add", "")
         message = "@" + body["message"]["user"]["name"] + \
-            " 私はこんな人なんだね!!教えてくれてありがとう!!\n"
+            " 私はこんな人なんだね！！ 教えてくれてありがとう！！\n"
         talk_handler.add_system_settings(message_sent)
         response_handler.post_to_traq(message, body["message"]["channelId"])
 
-    if message_sent.startswith("/new"):
+    elif message_sent.startswith("/new"):
         message_sent = message_sent.replace("/new", "")
         message = "@" + body["message"]["user"]["name"] + \
-            " 新しい私になったよ!!これからよろしくね!!\n"
+            " 新しい私になったよ！！ これからよろしくね！！\n"
         talk_handler.new_system_settings(message_sent)
         response_handler.post_to_traq(message, body["message"]["channelId"])
 
-    if message_sent == "/del":
+    elif message_sent == "/del":
         message = "@" + body["message"]["user"]["name"] + \
             " 私は何者でもなかったんだね...:sad_blob_cat_girl:\n"
         talk_handler.new_system_settings("")
