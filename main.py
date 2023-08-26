@@ -3,6 +3,11 @@ from handler import verification_handler, event_handler
 
 app = FastAPI()
 
+@app.get("/")
+async def root():
+    print("Hello World")
+    return {"message": "Hello World"}
+
 @app.post("/")
 async def root(request: Request):
     print(request)
