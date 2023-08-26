@@ -5,6 +5,7 @@ app = FastAPI()
 
 @app.post("/")
 async def root(request: Request):
+    print(request)
     event = verification_handler.verification_handler(request.headers)
     print(event)
     return event_handler.event_handler(event, await request.json())
