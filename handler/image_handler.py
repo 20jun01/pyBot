@@ -29,7 +29,7 @@ def generate_mask(image_path_in_function: str) -> str:
     # TODO: fix path with relative
     base_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(base_dir, image_path_in_function)
-    os.path.exists(file_path)
+    print(os.path.exists(file_path))
 
     image = cv2.imread(file_path, cv2.IMREAD_UNCHANGED)
 
