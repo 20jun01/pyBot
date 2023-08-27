@@ -20,7 +20,8 @@ def post_file(file_path: str, channel_id: str) -> str:
         r: requests.Response = requests.post(url, data=data, files=files, headers={
                                              "Content-Type": "multipart/form-data", "Authorization": f"Bearer {BOT_ACCESS_TOKEN}"})
         response_body = r.json()
-        return response_body["id"]
+        print(response_body)
+        return response_body["fileId"]
 
 
 def post_to_traq(text: str, channel_id: str) -> None:
