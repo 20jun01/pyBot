@@ -19,7 +19,9 @@ def edit_image(message: str, channel_id: str) -> (str, bool):
         return "何をすればいいのかな？", False
 
     file_url = get_file_url(file_ids[-1])
+    print(file_url)
     image_path_in_function = image_util.save_image_from_url_without_name(file_url)
+    print(image_path_in_function)
     mask_path = generate_mask(image_path_in_function)
     return open_ai.image_edit(image_path_in_function, mask_path, prompt), True
 
