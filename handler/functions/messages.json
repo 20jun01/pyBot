@@ -1,0 +1,5 @@
+{
+    "help": "## BOT_urturn_Talker\n### どうしたいか教えてね\n#### `/help`: このメッセージを表示するよ\n(/helpから始まればなんでもいいのは内緒ね)\n#### `/cont + {message}`: 前の続きを話そうか\n#### `/join`: 君と話しを始めたいって思えるよ\n#### `/leave`: そんなこと言わないでよ...\n#### `/add + {setting}`: キャラの設定を追加するよ\n#### `/new + {setting}`: キャラの設定を新しくするよ\n#### `/del`: 私の人格を消すよ...\n#### `/show`: 私の中身を見せてくれるよ\n#### `{message}`: いっぱいお話ししたいな\n#### `/personal + {command}`: 君だけのために話すよ\nex) `/personal add {setting}`",
+    "leave": ":snailchan_jito.ex-large.ex-large:",
+    "join": ":oisu-1::oisu-2::oisu-3::oisu-4yoko:"
+}

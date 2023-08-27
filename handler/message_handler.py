@@ -1,6 +1,7 @@
 from fastapi import Response
 from talk_handler import *
 from response_handler import *
+from functions import get_message_text
 
 
 def message_created_response(body: dict) -> Response:
@@ -120,26 +121,7 @@ def message_created_response(body: dict) -> Response:
 
 
 def create_response_message(message_type: str) -> str:
-    message = ""
-    if message_type == "help":
-        message += "## BOT_urturn_Talker\n"
-        message += "### どうしたいか教えてね\n"
-        message += "#### `/help`: このメッセージを表示するよ\n(/helpから始まればなんでもいいのは内緒ね)\n"
-        message += "#### `/cont + {message}`: 前の続きを話そうか\n"
-        message += "#### `/join`: 君と話しを始めたいって思えるよ\n"
-        message += "#### `/leave`: そんなこと言わないでよ...\n"
-        message += "#### `/add + {setting}`: キャラの設定を追加するよ\n"
-        message += "#### `/new + {setting}`: キャラの設定を新しくするよ\n"
-        message += "#### `/del`: 私の人格を消すよ...\n"
-        message += "#### `/show`: 私の中身を見せてくれるよ\n"
-        message += "#### `{message}`: いっぱいお話ししたいな\n"
-        message += "#### `/personal + {command}`: 君だけのために話すよ\n"
-        message += "ex) `/personal add {setting}`\n"
-    elif message_type == "leave":
-        message += ":snailchan_jito.ex-large.ex-large:"
-    elif message_type == "join":
-        message += ":oisu-1::oisu-2::oisu-3::oisu-4yoko:"
-    return message
+    return get_message_text(message_type)
 
 
 __all__ = ["message_created_response"]
