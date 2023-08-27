@@ -55,7 +55,7 @@ def image_edit(image_path: str, prompt: str = '', size: str = "1024x1024") -> st
     return image["data"][0]["url"]
 
 
-def image_generate(prompt: str = '', size: str = "256x256") -> str:
+async def image_generate(prompt: str = '', size: str = "256x256") -> str:
     """
     Args:
     prompt (str, optional): The optional prompt that will be used by the model to generate the image. Defaults to ''.
@@ -70,7 +70,7 @@ def image_generate(prompt: str = '', size: str = "256x256") -> str:
         size=size,
         response_format="url"
     )
-    print(image)
+    print("image", image)
 
     return image["data"][0]["url"]
 

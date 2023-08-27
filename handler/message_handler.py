@@ -5,7 +5,7 @@ from .image_handler import *
 from . import functions
 
 
-def message_created_response(body: dict) -> Response:
+async def message_created_response(body: dict) -> Response:
     if body["message"]["user"]["bot"]:
         print("message from bot")
         return Response(status_code=204)
@@ -47,7 +47,7 @@ def message_created_response(body: dict) -> Response:
         message_content = "`" + get_system_settings(is_personal, user) + "`"
 
     elif functions.is_image_generate_prefix(prefix):
-        message_content = generate_image(message_truthy)
+        message_content = await generate_image(message_truthy)
 
     # TODO: prefixを受け取った後の処理をする関数は別に作る(つまり、ここではget_message_textはしない)
     message = create_response_message(prefix, message_content)
