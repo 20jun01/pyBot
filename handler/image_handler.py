@@ -1,6 +1,5 @@
 from .functions import open_ai, image_util
-import re
-import cv2
+from PIL import Image, ImageDraw
 import numpy as np
 import random
 from .response_handler import get_channel_file_ids, get_file_url
@@ -26,25 +25,13 @@ def edit_image(message: str, channel_id: str) -> (str, bool):
     return open_ai.image_edit(image_path_in_function, mask_path, prompt), True
 
 def generate_mask(image_path_in_function: str) -> str:
-    # TODO: fix path with relative
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(base_dir, image_path_in_function)
-    print(os.path.exists(file_path))
-    print(file_path)
-    print(os.path.exists(image_path_in_function))
-    print(os.path.exists(os.getcwd() + image_path_in_function))
-
-    image = cv2.imread(image_path_in_function, cv2.IMREAD_UNCHANGED)
-    image2 = cv2.imread(file_path, cv2.IMREAD_UNCHANGED)
-    image3 = cv2.imread("/handler/"+ image_path_in_function, cv2.IMREAD_UNCHANGED)
-    image4 = cv2.imread(os.getcwd() + image_path_in_function, cv2.IMREAD_UNCHANGED)
-    image5 = cv2.imread("./" + image_path_in_function, cv2.IMREAD_UNCHANGED)
-
-    if image is None and image2 is None and image3 is None and image4 is None and image5 is None:
-        raise ValueError(f"Failed to load image from path: {image_path_in_function}")
+    # 画像を読み込む
+    image = Image.open(image_path_in_function)
+    if image is None:
+        return "これなに？"
 
     # 画像のサイズを取得
-    height, width, _ = image.shape
+    width, height = image.size
 
     # 画像を4分割する座標を計算
     segments = [
@@ -57,16 +44,17 @@ def generate_mask(image_path_in_function: str) -> str:
     x1, y1, x2, y2 = random.choice(segments)
 
     # 透過マスクを作成
-    mask = np.ones((height, width), dtype=np.uint8) * 255
-    mask[y1:y2, x1:x2] = 0
+    mask = Image.new('L', (width, height), 255)
+    draw = ImageDraw.Draw(mask)
+    draw.rectangle([x1, y1, x2, y2], fill=0)
 
     # 透過マスクを適用して新しい画像を生成
-    image[:, :, 3] = mask
+    image.putalpha(mask)
 
     mask_image_path = default_file_name + str(inc) + ".png"
     inc = (inc + 1) % 10
 
-    cv2.imwrite(mask_image_path, image)
+    image.save(mask_image_path)
     return mask_image_path
 
 import os

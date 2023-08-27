@@ -4,16 +4,17 @@ WORKDIR /
 
 COPY requirements.txt .
 
-# Install dependencies for OpenCV
-RUN apt-get update && apt-get install -y \
-    libgl1-mesa-glx \
-    libglib2.0-0 \
-    libsm6 \
-    libxext6 \
-    libxrender-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
+# Install dependencies for PIL
+RUN apk --no-cache add \
+    libjpeg-turbo \
+    && apk --no-cache --virtual pydeps add gcc \
+    g++ \
+    python3-dev \
+    musl-dev \
+    cython \
+    jpeg-dev \
+    zlib-dev \
+    && apk del --purge pydeps
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
