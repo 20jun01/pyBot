@@ -70,6 +70,7 @@ def image_generate(prompt: str = '', size: str = "256x256") -> str:
         size=size,
         response_format="url"
     )
+    print(image)
 
     return image["data"][0]["url"]
 
