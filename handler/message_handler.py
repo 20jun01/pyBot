@@ -51,7 +51,7 @@ async def message_created_response(body: dict) -> Response:
         image_url = await generate_image(message_truthy)
         image_path = functions.save_image_from_url_without_name(image_url)
         # TODO: trapのAPIURLなので適したところから取得する
-        message_content = "https://q.trap.jp/files/" + await post_file(image_path, channel_id)
+        message_content = "https://q.trap.jp/files/" + post_file(image_path, channel_id)
 
     # TODO: prefixを受け取った後の処理をする関数は別に作る(つまり、ここではget_message_textはしない)
     message = create_response_message(prefix, message_content)
