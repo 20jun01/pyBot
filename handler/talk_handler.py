@@ -12,17 +12,17 @@ with open("system_setting.txt", "r") as f:
 past_message = []
 
 
-def generate_talk(message: str) -> str:
-    global past_messages
-    new_message, messages = talk_handler([], message)
-    past_messages = messages
-    return new_message
-
-
-def generate_talk_cont(message: str) -> str:
-    global past_messages
-    new_message, messages = talk_handler(past_messages, message)
-    past_messages = messages
+def generate_talk(message: str, is_personal: bool, is_cont: bool, user: str = "") -> str:
+    global past_messages, personal_past_messages
+    if is_personal:
+        past_messages = personal_past_messages.get(user, []) if is_cont else []
+        new_message, messages = talk_handler_personal(
+            past_messages, message, user)
+        personal_past_messages[user] = messages
+    else:
+        past_messages = past_messages if is_cont else []
+        new_message, messages = talk_handler(past_messages, message)
+        past_messages = messages
     return new_message
 
 
@@ -32,80 +32,37 @@ def talk_handler(past_messages: str, message: str):
     return new_message, messages
 
 
-def add_system_settings(settings: str):
+def add_system_settings(settings: str, is_personal: bool, user: str = ""):
     global system_settings
+    if is_personal:
+        personal_settings[user] = personal_settings.get(user, "") + settings
+        return
     system_settings += settings
     with open("system_setting.txt", "w") as f:
         f.write(system_settings)
 
 
-def get_system_settings() -> str:
+def get_system_settings(is_personal: bool, user: str = "") -> str:
     global system_settings
-    return system_settings
+    return personal_settings.get(user, '') if is_personal else system_settings
 
 
-def new_system_settings(settings: str):
-    global system_settings
+def new_system_settings(settings: str, is_personal: bool, user: str = ""):
+    global system_settings, personal_settings
+    if is_personal:
+        personal_settings[user] = settings
+        return
     system_settings = settings
     with open("system_setting.txt", "w") as f:
         f.write(system_settings)
 
 
-def add_settings_personal(settings: str, user: str):
-    global personal_settings
-    if user in personal_settings:
-        personal_settings[user] += settings
-    else:
-        personal_settings[user] = settings
-
-
-def new_settings_personal(settings: str, user: str):
-    global personal_settings
-    personal_settings[user] = settings
-
-
-def generate_talk_personal(message: str, user: str) -> str:
-    global personal_past_messages
-    if user in personal_past_messages:
-        new_message, messages = talk_handler_personal(
-            personal_past_messages[user], message, user)
-        personal_past_messages[user] = messages
-    else:
-        new_message, messages = talk_handler_personal([], message, user)
-        personal_past_messages[user] = messages
-    return new_message
-
-
-def generate_talk_cont_personal(message: str, user: str) -> str:
-    global personal_past_messages
-    if user in personal_past_messages:
-        new_message, messages = talk_handler_personal(
-            personal_past_messages[user], message, user)
-        personal_past_messages[user] = messages
-    else:
-        new_message, messages = talk_handler_personal([], message, user)
-        personal_past_messages[user] = messages
-    return new_message
-
-
 def talk_handler_personal(past_messages: str, message: str, user: str):
     global personal_settings
-    if user in personal_settings:
-        new_message, messages = open_ai.completion(
-            message, personal_settings[user], past_messages)
-    else:
-        new_message, messages = open_ai.completion(
-            message, system_settings, past_messages)
+    new_message, messages = open_ai.completion(
+        message, personal_settings.get(user, ""), past_messages)
     return new_message, messages
 
 
-def settings_personal(user: str) -> str:
-    global personal_settings
-    if user in personal_settings:
-        return personal_settings[user]
-    else:
-        return ""
-
-
-__all__ = ["generate_talk", "generate_talk_cont", "add_system_settings", "new_system_settings", "add_settings_personal",
-           "new_settings_personal", "generate_talk_personal", "generate_talk_cont_personal", "settings_personal", "get_system_settings"]
+__all__ = ["generate_talk", "add_system_settings", "new_system_settings", "add_settings_personal",
+           "new_settings_personal", "get_system_settings"]

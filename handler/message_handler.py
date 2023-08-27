@@ -10,104 +10,45 @@ def message_created_response(body: dict) -> Response:
         return Response(status_code=204)
 
     message_sent = body["message"]["plainText"]
+    channel_id = body["message"]["channelId"]
+    user = body["message"]["user"]["name"]
+    display_name = body["message"]["user"]["displayName"]
 
-    if message_sent.startswith("/help"):
-        message = create_response_message("help")
-        post_to_traq(message, body["message"]["channelId"])
-        return Response(status_code=204)
+    is_personal, prefix, message_truthy = functions.get_message_prefixes(
+        message_sent)
+    message_content = ""
 
-    elif message_sent.startswith("@BOT_urturn_Talker /join"):
-        join_channel(body["message"]["channelId"])
-        message = create_response_message("join")
-        post_to_traq(message, body["message"]["channelId"])
-        return Response(status_code=204)
+    if functions.is_join_prefix(prefix):
+        join_channel(channel_id)
 
-    elif message_sent.startswith("/leave"):
-        leave_channel(body["message"]["channelId"])
-        message = create_response_message("leave")
-        post_to_traq(message, body["message"]["channelId"])
-        return Response(status_code=204)
+    elif functions.is_leave_prefix(prefix):
+        leave_channel(channel_id)
 
-    elif message_sent.startswith("/cont"):
-        message_sent = message_sent.replace("/cont", "")
-        message = "もっと話したいんだね:okk:\n"
-        talk_contents = generate_talk_cont(message_sent)
-        message += talk_contents.replace("@", "`@`")
-        post_to_traq(message, body["message"]["channelId"])
-        return Response(status_code=204)
+    # .replaceはgenerate側の責務な気もするけど、@を返したくないのはtraqへの投稿の責務なのでここでやる
+    elif functions.is_talk_prefix(prefix):
+        message_content = generate_talk(
+            message_truthy, is_personal, False, user).replace("@", "`@`")
 
-    elif message_sent.startswith("/add"):
-        message_sent = message_sent.replace("/add", "")
-        message = "私はこんな人なんだね！！ 教えてくれてありがとう！！\n"
-        add_system_settings(message_sent)
-        post_to_traq(message, body["message"]["channelId"])
+    elif functions.is_talk_cont_prefix(prefix):
+        message_content = generate_talk(
+            message_truthy, is_personal, True, user).replace("@", "`@`")
 
-    elif message_sent.startswith("/new"):
-        message_sent = message_sent.replace("/new", "")
-        message = "新しい私になったよ！！ これからよろしくね！！\n"
-        new_system_settings(message_sent)
-        post_to_traq(message, body["message"]["channelId"])
+    elif functions.is_add_setting_prefix(prefix):
+        add_system_settings(message_truthy, is_personal, user)
 
-    elif message_sent == "/del":
-        message = "私は何者でもなかったんだね...:sad_blob_cat_girl:\n"
-        new_system_settings("")
-        post_to_traq(message, body["message"]["channelId"])
+    elif functions.is_new_setting_prefix(prefix):
+        new_system_settings(message_truthy, is_personal, user)
 
-    elif message_sent == "/show":
-        message = "私の中身はこんな感じだよ！！\n"
-        message += "`" + get_system_settings() + "`"
-        post_to_traq(message, body["message"]["channelId"])
+    elif functions.is_del_setting_prefix(prefix):
+        new_system_settings("", is_personal, user)
 
-    elif message_sent.startswith("/personal"):
-        message_sent = message_sent.replace("/personal", "")
-        user = body["message"]["user"]["name"]
-        if message_sent.startswith(" cont"):
-            message_sent = message_sent.replace("cont", "")
-            message = "もっと話したいんだね:okk:\n"
-            talk_contents = generate_talk_cont_personal(
-                message_sent, user)
-            message += talk_contents.replace("@", "`@`")
-            post_to_traq(
-                message, body["message"]["channelId"])
-            return Response(status_code=204)
-        elif message_sent.startswith(" add"):
-            message_sent = message_sent.replace("add", "")
-            message = "私はこんな人なんだね！！ 教えてくれてありがとう！！\n"
-            add_settings_personal(message_sent, user)
-            post_to_traq(
-                message, body["message"]["channelId"])
-        elif message_sent.startswith(" new"):
-            message_sent = message_sent.replace("new", "")
-            message = "新しい私になったよ！！ これからよろしくね！！\n"
-            new_settings_personal(message_sent, user)
-            post_to_traq(
-                message, body["message"]["channelId"])
-        elif message_sent == " del":
-            message = "私は何者でもなかったんだね...:sad_blob_cat_girl:\n"
-            new_settings_personal("", user)
-            post_to_traq(
-                message, body["message"]["channelId"])
-        elif message_sent == " show":
-            message = "私の中身はこんな感じだよ！！\n"
-            message += "`" + settings_personal(user) + "`"
-            post_to_traq(
-                message, body["message"]["channelId"])
-        else:
-            message = body["message"]["user"]["displayName"] + \
-                "さん :oisu-1::oisu-2::oisu-3::oisu-4yoko:\n"
-            talk_contents = generate_talk_personal(
-                message_sent, user)
-            message += talk_contents.replace("@", "`@`")
-            post_to_traq(
-                message, body["message"]["channelId"])
+    elif functions.is_show_setting_prefix(prefix):
+        message_content = "`" + get_system_settings(is_personal, user) + "`"
 
-    else:
-        message = body["message"]["user"]["displayName"] + \
-            "さん :oisu-1::oisu-2::oisu-3::oisu-4yoko:\n"
-        talk_contents = generate_talk(message_sent)
-        message += talk_contents.replace("@", "`@`")
-        post_to_traq(message, body["message"]["channelId"])
-        return Response(status_code=204)
+    # TODO: prefixを受け取った後の処理をする関数は別に作る(つまり、ここではget_message_textはしない)
+    message = create_response_message(prefix, message_content)
+    post_to_traq(message, channel_id)
+    return Response(status_code=204)
 
 
 def create_response_message(message_type: str) -> str:
