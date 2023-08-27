@@ -32,10 +32,11 @@ def generate_mask(image_path_in_function: str) -> str:
     print(os.path.exists(file_path))
     print(file_path)
     print(os.path.exists(image_path_in_function))
+    print(os.path.exists(os.getcwd() + image_path_in_function))
 
     image = cv2.imread(image_path_in_function, cv2.IMREAD_UNCHANGED)
     image2 = cv2.imread(file_path, cv2.IMREAD_UNCHANGED)
-    image3 = cv2.imread("/handler/functions/"+ image_path_in_function, cv2.IMREAD_UNCHANGED)
+    image3 = cv2.imread("/handler/"+ image_path_in_function, cv2.IMREAD_UNCHANGED)
 
     if image is None and image2 is None and image3 is None:
         raise ValueError(f"Failed to load image from path: {image_path_in_function}")
