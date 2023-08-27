@@ -30,8 +30,7 @@ def message_created_response(body: dict) -> Response:
 
     elif message_sent.startswith("/cont"):
         message_sent = message_sent.replace("/cont", "")
-        message = "@" + body["message"]["user"]["name"] + \
-            " もっと話したいんだね:okk:\n"
+        message = "もっと話したいんだね:okk:\n"
         talk_contents = generate_talk_cont(message_sent)
         message += talk_contents.replace("@", "`@`")
         post_to_traq(message, body["message"]["channelId"])
@@ -39,27 +38,23 @@ def message_created_response(body: dict) -> Response:
 
     elif message_sent.startswith("/add"):
         message_sent = message_sent.replace("/add", "")
-        message = "@" + body["message"]["user"]["name"] + \
-            " 私はこんな人なんだね！！ 教えてくれてありがとう！！\n"
+        message = "私はこんな人なんだね！！ 教えてくれてありがとう！！\n"
         add_system_settings(message_sent)
         post_to_traq(message, body["message"]["channelId"])
 
     elif message_sent.startswith("/new"):
         message_sent = message_sent.replace("/new", "")
-        message = "@" + body["message"]["user"]["name"] + \
-            " 新しい私になったよ！！ これからよろしくね！！\n"
+        message = "新しい私になったよ！！ これからよろしくね！！\n"
         new_system_settings(message_sent)
         post_to_traq(message, body["message"]["channelId"])
 
     elif message_sent == "/del":
-        message = "@" + body["message"]["user"]["name"] + \
-            " 私は何者でもなかったんだね...:sad_blob_cat_girl:\n"
+        message = "私は何者でもなかったんだね...:sad_blob_cat_girl:\n"
         new_system_settings("")
         post_to_traq(message, body["message"]["channelId"])
 
     elif message_sent == "/show":
-        message = "@" + body["message"]["user"]["name"] + \
-            " 私の中身はこんな感じだよ！！\n"
+        message = "私の中身はこんな感じだよ！！\n"
         message += "`" + system_settings + "`"
         post_to_traq(message, body["message"]["channelId"])
 
@@ -68,8 +63,7 @@ def message_created_response(body: dict) -> Response:
         user = body["message"]["user"]["name"]
         if message_sent.startswith(" cont"):
             message_sent = message_sent.replace("cont", "")
-            message = "@" + body["message"]["user"]["name"] + \
-                " もっと話したいんだね:okk:\n"
+            message = "もっと話したいんだね:okk:\n"
             talk_contents = generate_talk_cont_personal(
                 message_sent, user)
             message += talk_contents.replace("@", "`@`")
@@ -78,27 +72,23 @@ def message_created_response(body: dict) -> Response:
             return Response(status_code=204)
         elif message_sent.startswith(" add"):
             message_sent = message_sent.replace("add", "")
-            message = "@" + body["message"]["user"]["name"] + \
-                " 私はこんな人なんだね！！ 教えてくれてありがとう！！\n"
+            message = "私はこんな人なんだね！！ 教えてくれてありがとう！！\n"
             add_settings_personal(message_sent, user)
             post_to_traq(
                 message, body["message"]["channelId"])
         elif message_sent.startswith(" new"):
             message_sent = message_sent.replace("new", "")
-            message = "@" + body["message"]["user"]["name"] + \
-                " 新しい私になったよ！！ これからよろしくね！！\n"
+            message = "新しい私になったよ！！ これからよろしくね！！\n"
             new_settings_personal(message_sent, user)
             post_to_traq(
                 message, body["message"]["channelId"])
         elif message_sent == " del":
-            message = "@" + body["message"]["user"]["name"] + \
-                " 私は何者でもなかったんだね...:sad_blob_cat_girl:\n"
+            message = "私は何者でもなかったんだね...:sad_blob_cat_girl:\n"
             new_settings_personal("", user)
             post_to_traq(
                 message, body["message"]["channelId"])
         elif message_sent == " show":
-            message = "@" + body["message"]["user"]["name"] + \
-                " 私の中身はこんな感じだよ！！\n"
+            message = "私の中身はこんな感じだよ！！\n"
             message += "`" + settings_personal(user) + "`"
             post_to_traq(
                 message, body["message"]["channelId"])
