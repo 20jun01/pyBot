@@ -26,7 +26,16 @@ def edit_image(message: str, channel_id: str) -> (str, bool):
     return open_ai.image_edit(image_path_in_function, mask_path, prompt), True
 
 def generate_mask(image_path_in_function: str) -> str:
-    image = cv2.imread("functions/" + image_path_in_function, cv2.IMREAD_UNCHANGED)
+    path = find_file(".", image_path_in_function)
+    if path:
+        print(f"Found the file at: {path}")
+    else:
+        print("File not found.")
+    
+    image = cv2.imread(path, cv2.IMREAD_UNCHANGED)
+
+    if image is None:
+        raise ValueError(f"Failed to load image from path: {image_path_in_function}")
 
     # 画像のサイズを取得
     height, width, _ = image.shape
@@ -52,5 +61,13 @@ def generate_mask(image_path_in_function: str) -> str:
 
     cv2.imwrite(mask_image_path, image)
     return mask_image_path
+
+import os
+
+def find_file(start_directory, target_file_name):
+    for root, dirs, files in os.walk(start_directory):
+        if target_file_name in files:
+            return os.path.join(root, target_file_name)
+    return None
 
 __all__ = ['generate_image', 'edit_image']
