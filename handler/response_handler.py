@@ -7,9 +7,20 @@ BOT_ACCESS_TOKEN = os.environ["BOT_ACCESS_TOKEN"]
 TRAQ_API_URL = os.environ["TRAQ_URL"]
 BOT_ID = os.environ["BOT_ID"]
 BASIC_HEADERS: dict = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {BOT_ACCESS_TOKEN}"
-    }
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {BOT_ACCESS_TOKEN}"
+}
+
+
+def post_file(file_path: str, channel_id: str) -> str:
+    url: str = f"{TRAQ_API_URL}/files"
+    data = {'channelId': channel_id}
+    with open(file_path, 'rb') as f:
+        files = {'file': f}
+        r: requests.Response = requests.post(url, data=data, files=files, headers={
+                                             "Content-Type": "multipart/form-data", "Authorization": f"Bearer {BOT_ACCESS_TOKEN}"})
+        response_body = r.json()
+        return response_body["id"]
 
 
 def post_to_traq(text: str, channel_id: str) -> None:
@@ -43,4 +54,4 @@ def leave_channel(channel_id: str) -> None:
         url, data=json.dumps(data), headers=BASIC_HEADERS)
 
 
-__all__ = ["post_to_traq", "join_channel", "leave_channel"]
+__all__ = ["post_to_traq", "join_channel", "leave_channel", "post_file"]

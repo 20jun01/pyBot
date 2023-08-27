@@ -6,11 +6,11 @@ def save_image_from_url_without_name(url: str) -> str:
     global inc
     response = requests.get(url)
     image = response.content
-    file_name = default_file_name + str(inc) + ".png"
+    file_path = default_file_name + str(inc) + ".png"
     inc += 1
-    with open(file_name, "wb") as f:
+    with open(file_path, "wb") as f:
         f.write(image)
-    return file_name
+    return file_path
 
 def save_image_from_url(url: str, file_name: str):
     response = requests.get(url)
