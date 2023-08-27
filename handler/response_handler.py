@@ -11,6 +11,23 @@ BASIC_HEADERS: dict = {
     "Authorization": f"Bearer {BOT_ACCESS_TOKEN}"
 }
 
+def get_channel_file_ids(channel_id: str) -> list:
+    url: str = f"{TRAQ_API_URL}/files"
+    query: dict = {
+        "channelId": channel_id,
+        "limit": 20,
+        "offset": 0,
+        "order": "desc",
+        "mine": False
+    }
+    r: requests.Response = requests.get(url, params=query, headers=BASIC_HEADERS)
+    response_body = r.json()
+    return [file["id"] for file in response_body]
+
+
+def get_file_url(file_id: str) -> str:
+    return "https://q.trap.jp/files/" + file_id
+
 
 def post_file(file_path: str, channel_id: str) -> str:
     url: str = f"{TRAQ_API_URL}/files"

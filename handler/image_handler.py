@@ -3,6 +3,7 @@ import re
 import cv2
 import numpy as np
 import random
+from .response_handler import get_channel_file_ids, get_file_url
 
 default_file_name = "mask"
 inc = 0
@@ -10,13 +11,15 @@ inc = 0
 async def generate_image(prompt: str):
     return await open_ai.image_generate(prompt)
 
-def edit_image(message: str) -> (str, bool):
-    file_urls = re.findall(r'https?://q\.trap\.jp/\S+', message)
-    print(file_urls, message)
-    if len(file_urls) == 0:
+def edit_image(message: str, channel_id: str) -> (str, bool):
+    file_ids = get_channel_file_ids(channel_id)
+    prompt = message.replace("[添付ファイル]", "")
+    
+    if len(file_ids) == 0:
         return "何をすればいいのかな？", False
-    prompt = re.sub(r'https?://q\.trap\.jp/\S+', '', message).strip()
-    image_path = image_util.save_image_from_url_without_name(file_urls[-1])
+    
+    file_url = get_file_url(file_ids[-1])
+    image_path = image_util.save_image_from_url_without_name(file_url)
     mask_path = generate_mask(image_path)
     return open_ai.image_edit(image_path, mask_path, prompt), True
 
