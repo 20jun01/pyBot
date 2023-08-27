@@ -23,4 +23,4 @@ async def get_health() -> HealthCheck:
 @app.post("/")
 async def root(request: Request):
     event = handler.verification_handler(request.headers)
-    return handler.event_handler(event, await request.json())
+    return await handler.event_handler(event, await request.json())
