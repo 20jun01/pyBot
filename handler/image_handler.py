@@ -26,13 +26,11 @@ def edit_image(message: str, channel_id: str) -> (str, bool):
     return open_ai.image_edit(image_path_in_function, mask_path, prompt), True
 
 def generate_mask(image_path_in_function: str) -> str:
-    path = find_file(".", image_path_in_function)
-    if path:
-        print(f"Found the file at: {path}")
-    else:
-        print("File not found.")
-    
-    image = cv2.imread(path, cv2.IMREAD_UNCHANGED)
+    # TODO: fix path with relative
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(base_dir, image_path_in_function)
+
+    image = cv2.imread(file_path, cv2.IMREAD_UNCHANGED)
 
     if image is None:
         raise ValueError(f"Failed to load image from path: {image_path_in_function}")
