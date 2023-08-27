@@ -18,7 +18,7 @@ import os
 # print(message)  # 出力: Hello, Alice!
 
 
-COMMAND_PREFIXES = ['help', '@BOT_urturn_Talker /join',
+COMMAND_PREFIXES = ['/help', '@BOT_urturn_Talker /join',
                     '/leave', '/cont', '/add', '/new', '/del', '/show']
 COMMAND_PREFIXES_PERSONAL = ['/personal cont', '/personal add',
                              '/personal new', '/personal del', '/personal show', '/personal']
@@ -77,6 +77,8 @@ messages = load_messages()
 
 
 def get_message_text(keyword: str) -> str:
+    if keyword == "":
+        return ""
     return messages.get(keyword, "ごめん、よくわからないかも")
 
 
