@@ -1,6 +1,9 @@
 from fastapi import FastAPI, HTTPException, Request, Response, status
 from handler import verification_handler, event_handler
 from models import HealthCheck
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI()
 
