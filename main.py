@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 
 load_dotenv()
-from models import HealthCheck
+from models import HealthCheck, ImageGenerateRequest
 import handler
 from fastapi import FastAPI, HTTPException, Request, Response, status
 
@@ -24,3 +24,8 @@ async def get_health() -> HealthCheck:
 async def root(request: Request):
     event = handler.verification_handler(request.headers)
     return await handler.event_handler(event, await request.json())
+
+
+@app.post("/openai/image/gen")
+async def openai_image_gen(request: ImageGenerateRequest):
+    return await handler.image_handler.generate_image(request.prompt)

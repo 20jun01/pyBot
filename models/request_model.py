@@ -3,4 +3,7 @@ from pydantic import BaseModel
 class TalkRequest(BaseModel):
     message: str
 
-__all__ = ["TalkRequest"]
+class ImageGenerateRequest(BaseModel):
+    prompt: str
+
+__all__ = ["TalkRequest", "ImageGenerateRequest"]
