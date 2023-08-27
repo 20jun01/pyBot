@@ -17,8 +17,7 @@ def post_file(file_path: str, channel_id: str) -> str:
     data = {'channelId': channel_id}
     with open(file_path, 'rb') as f:
         files = {'file': f}
-        r: requests.Response = requests.post(url, data=data, files=files, headers={
-                                             "Content-Type": "multipart/form-data", "Authorization": f"Bearer {BOT_ACCESS_TOKEN}"})
+        r: requests.Response = requests.post(url, data=data, files=files, headers={"Authorization": f"Bearer {BOT_ACCESS_TOKEN}"})
         response_body = r.json()
         print(response_body)
         return response_body["fileId"]
