@@ -14,8 +14,7 @@ def message_created_response(body: dict) -> Response:
     user = body["message"]["user"]["name"]
     display_name = body["message"]["user"]["displayName"]
 
-    is_personal, prefix, message_truthy = functions.get_message_prefixes(
-        message_sent)
+    is_personal, prefix, message_truthy = functions.get_message_prefixes(message_sent)
     message_content = ""
 
     if functions.is_join_prefix(prefix):

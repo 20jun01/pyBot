@@ -24,6 +24,13 @@ COMMAND_PREFIXES_PERSONAL = ['/personal cont', '/personal add',
                              '/personal new', '/personal del', '/personal show', '/personal']
 
 
+def get_message_prefixes(message_sent: str) -> (bool, str, str):
+    is_personal, prefix, message_truthy = get_message_prefixes_personal(
+        message_sent)
+    if not is_personal:
+        prefix, message_truthy = get_message_prefixes_global(message_sent)
+    return is_personal, prefix, message_truthy
+
 def get_message_prefixes_personal(message_sent: str) -> (bool, str, str):
     for prefix in COMMAND_PREFIXES_PERSONAL:
         if message_sent.startswith(prefix):
@@ -31,7 +38,7 @@ def get_message_prefixes_personal(message_sent: str) -> (bool, str, str):
     return False, "", message_sent
 
 
-def get_message_prefixes(message_sent: str) -> (str, str):
+def get_message_prefixes_global(message_sent: str) -> (str, str):
     for prefix in COMMAND_PREFIXES:
         if message_sent.startswith(prefix):
             return prefix.replace("/", ""), message_sent.replace(prefix, "")
@@ -46,11 +53,14 @@ def is_join_prefix(prefix) -> bool:
 def is_leave_prefix(prefix) -> bool:
     return prefix == "/leave".replace("/", "")
 
+
 def is_talk_prefix(prefix: str) -> bool:
     return prefix == ""
 
+
 def is_talk_cont_prefix(prefix: str) -> bool:
     return "cont" in prefix
+
 
 # TODO: fix path with relative
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -70,5 +80,5 @@ def get_message_text(keyword: str) -> str:
     return messages.get(keyword, "ごめん、よくわからないかも")
 
 
-__all__ = ["get_message_text", "get_message_prefixes",
-           "get_message_prefixes_personal", "is_join_prefix", "is_leave_prefix", "is_talk_prefix", "is_talk_cont_prefix"]
+__all__ = ["get_message_text",
+           "get_message_prefixes", "is_join_prefix", "is_leave_prefix", "is_talk_prefix", "is_talk_cont_prefix"]
