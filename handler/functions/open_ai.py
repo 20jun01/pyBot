@@ -66,7 +66,9 @@ def image_generate(prompt: str = '', size: str = "256x256") -> str:
     """
     image = openai.Image.create(
         prompt=prompt,
-        size=size
+        n = 1,
+        size=size,
+        response_format="url"
     )
 
     return image["data"][0]["url"]
