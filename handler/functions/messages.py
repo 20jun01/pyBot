@@ -19,7 +19,7 @@ import os
 
 
 COMMAND_PREFIXES = ['/help', '@BOT_urturn_Talker /join',
-                    '/leave', '/cont', '/add', '/new', '/del', '/show', '/generate']
+                    '/leave', '/cont', '/add', '/new', '/del', '/show', '/generate', '/edit']
 COMMAND_PREFIXES_PERSONAL = ['/personal cont', '/personal add',
                              '/personal new', '/personal del', '/personal show', '/personal']
 
@@ -77,6 +77,9 @@ def is_show_setting_prefix(prefix: str) -> bool:
 def is_image_generate_prefix(prefix: str) -> bool:
     return prefix == "/generate".replace("/", "")
 
+def is_image_edit_prefix(prefix: str) -> bool:
+    return prefix == "/edit".replace("/", "")
+
 # TODO: fix path with relative
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FILE_PATH = os.path.join(BASE_DIR, "messages.json")
@@ -98,4 +101,4 @@ def get_message_text(keyword: str) -> str:
 
 
 __all__ = ["get_message_text",
-           "get_message_prefixes", "is_join_prefix", "is_leave_prefix", "is_talk_prefix", "is_talk_cont_prefix", "is_add_setting_prefix", "is_new_setting_prefix", "is_del_setting_prefix", "is_show_setting_prefix", "is_image_generate_prefix"]
+           "get_message_prefixes", "is_join_prefix", "is_leave_prefix", "is_talk_prefix", "is_talk_cont_prefix", "is_add_setting_prefix", "is_new_setting_prefix", "is_del_setting_prefix", "is_show_setting_prefix", "is_image_generate_prefix", "is_image_edit_prefix"]

@@ -7,7 +7,7 @@ def save_image_from_url_without_name(url: str) -> str:
     response = requests.get(url)
     image = response.content
     file_path = default_file_name + str(inc) + ".png"
-    inc += 1
+    inc = (inc + 1) % 10
     with open(file_path, "wb") as f:
         f.write(image)
     return file_path

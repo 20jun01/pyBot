@@ -34,7 +34,7 @@ def completion(new_message_text: str, settings_text: str = '', past_messages: li
     return response_message_text, past_messages
 
 
-def image_edit(image_path: str, prompt: str = '', size: str = "1024x1024") -> str:
+def image_edit(image_path: str, mask_path: str, prompt: str = '', size: str = "1024x1024") -> str:
     """
     This function generates an edited image using OpenAI's DALL-E model by taking in an image and an optional prompt as inputs.
 
@@ -48,6 +48,7 @@ def image_edit(image_path: str, prompt: str = '', size: str = "1024x1024") -> st
     """
     image = openai.Image.create_edit(
         image=open(image_path, "rb"),
+        mask=open(mask_path, "rb"),
         prompt=prompt,
         size=size
     )

@@ -53,6 +53,15 @@ async def message_created_response(body: dict) -> Response:
         # TODO: trapのAPIURLなので適したところから取得する
         message_content = "https://q.trap.jp/files/" + post_file(image_path, channel_id)
 
+    elif functions.is_image_edit_prefix(prefix):
+        image_url, is_succeed = await edit_image(message_truthy)
+        if is_succeed:
+            image_path = functions.save_image_from_url_without_name(image_url)
+            message_content = "https://q.trap.jp/files/" + post_file(image_path, channel_id)
+        else:
+            prefix = ""
+            message_content = image_url
+
     # TODO: prefixを受け取った後の処理をする関数は別に作る(つまり、ここではget_message_textはしない)
     message = create_response_message(prefix, message_content)
     post_to_traq(message, channel_id)
