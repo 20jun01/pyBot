@@ -32,7 +32,7 @@ def generate_mask(image_path_in_function: str) -> str:
     print(os.path.exists(file_path))
     print(os.path.exists(image_path_in_function))
 
-    image = cv2.imread(file_path, cv2.IMREAD_UNCHANGED)
+    image = cv2.imread(image_path_in_function, cv2.IMREAD_UNCHANGED)
 
     if image is None:
         raise ValueError(f"Failed to load image from path: {image_path_in_function}")
