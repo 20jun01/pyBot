@@ -18,7 +18,7 @@ def edit_image(message: str, channel_id: str) -> (str, bool):
     if len(file_ids) == 0:
         return "何をすればいいのかな？", False
 
-    file_url = get_file_url(file_ids[-1])
+    file_url = get_file_url(file_ids[0])
     print(file_url)
     image_path_in_function = image_util.save_image_from_url_without_name(file_url)
     print(image_path_in_function)
@@ -30,6 +30,7 @@ def generate_mask(image_path_in_function: str) -> str:
     base_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(base_dir, image_path_in_function)
     print(os.path.exists(file_path))
+    print(os.path.exists(image_path_in_function))
 
     image = cv2.imread(file_path, cv2.IMREAD_UNCHANGED)
 
@@ -57,6 +58,7 @@ def generate_mask(image_path_in_function: str) -> str:
     image[:, :, 3] = mask
 
     mask_image_path = default_file_name + str(inc) + ".png"
+    inc = (inc + 1) % 10
 
     cv2.imwrite(mask_image_path, image)
     return mask_image_path
