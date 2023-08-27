@@ -63,19 +63,19 @@ def is_talk_cont_prefix(prefix: str) -> bool:
 
 
 def is_add_setting_prefix(prefix: str) -> bool:
-    return prefix == "/add"
+    return prefix == "/add".replace("/", "")
 
 def is_new_setting_prefix(prefix: str) -> bool:
-    return prefix == "/new"
+    return prefix == "/new".replace("/", "")
 
 def is_del_setting_prefix(prefix: str) -> bool:
-    return prefix == "/del"
+    return prefix == "/del".replace("/", "")
 
 def is_show_setting_prefix(prefix: str) -> bool:
-    return prefix == "/show"
+    return prefix == "/show".replace("/", "")
 
 def is_image_generate_prefix(prefix: str) -> bool:
-    return prefix == "/generate"
+    return prefix == "/generate".replace("/", "")
 
 # TODO: fix path with relative
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
