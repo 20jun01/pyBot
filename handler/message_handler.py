@@ -1,6 +1,7 @@
 from fastapi import Response
 from .talk_handler import *
 from .response_handler import *
+from .image_handler import *
 from . import functions
 
 
@@ -14,7 +15,8 @@ def message_created_response(body: dict) -> Response:
     user = body["message"]["user"]["name"]
     display_name = body["message"]["user"]["displayName"]
 
-    is_personal, prefix, message_truthy = functions.get_message_prefixes(message_sent)
+    is_personal, prefix, message_truthy = functions.get_message_prefixes(
+        message_sent)
     message_content = ""
 
     if functions.is_join_prefix(prefix):
@@ -43,6 +45,9 @@ def message_created_response(body: dict) -> Response:
 
     elif functions.is_show_setting_prefix(prefix):
         message_content = "`" + get_system_settings(is_personal, user) + "`"
+
+    elif functions.is_image_generate_prefix(prefix):
+        message_content = generate_image(message_truthy)
 
     # TODO: prefixを受け取った後の処理をする関数は別に作る(つまり、ここではget_message_textはしない)
     message = create_response_message(prefix, message_content)
