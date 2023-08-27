@@ -12,6 +12,7 @@ async def generate_image(prompt: str):
 
 def edit_image(message: str) -> (str, bool):
     file_urls = re.findall(r'https?://q\.trap\.jp/\S+', message)
+    print(file_urls, message)
     if len(file_urls) == 0:
         return "何をすればいいのかな？", False
     prompt = re.sub(r'https?://q\.trap\.jp/\S+', '', message).strip()

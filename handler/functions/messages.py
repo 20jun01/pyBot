@@ -34,14 +34,14 @@ def get_message_prefixes(message_sent: str) -> (bool, str, str):
 def get_message_prefixes_personal(message_sent: str) -> (bool, str, str):
     for prefix in COMMAND_PREFIXES_PERSONAL:
         if message_sent.startswith(prefix):
-            return True, prefix.replace("/personal", "").strip(), message_sent.replace(prefix, "")
+            return True, prefix.replace("/personal", "").strip(), message_sent[len(prefix):]
     return False, "", message_sent
 
 
 def get_message_prefixes_global(message_sent: str) -> (str, str):
     for prefix in COMMAND_PREFIXES:
         if message_sent.startswith(prefix):
-            return prefix.replace("/", ""), message_sent.replace(prefix, "")
+            return prefix.replace("/", ""), message_sent[len(prefix):]
     return "", message_sent
 
 
