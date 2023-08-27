@@ -2,9 +2,14 @@ import json
 import requests
 import os
 
+# constants
 BOT_ACCESS_TOKEN = os.environ["BOT_ACCESS_TOKEN"]
 TRAQ_API_URL = os.environ["TRAQ_URL"]
 BOT_ID = os.environ["BOT_ID"]
+BASIC_HEADERS: dict = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {BOT_ACCESS_TOKEN}"
+    }
 
 
 def post_to_traq(text: str, channel_id: str) -> None:
@@ -13,12 +18,8 @@ def post_to_traq(text: str, channel_id: str) -> None:
         "content": text,
         "embed": True
     }
-    headers: dict = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {BOT_ACCESS_TOKEN}"
-    }
     r: requests.Response = requests.post(
-        url, data=json.dumps(data), headers=headers)
+        url, data=json.dumps(data), headers=BASIC_HEADERS)
     response_body = r.json()
 
 
@@ -28,13 +29,8 @@ def join_channel(channel_id: str) -> None:
         "channelId": channel_id
     }
 
-    headers: dict = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {BOT_ACCESS_TOKEN}"
-    }
-
     r: requests.Response = requests.post(
-        url, data=json.dumps(data), headers=headers)
+        url, data=json.dumps(data), headers=BASIC_HEADERS)
 
 
 def leave_channel(channel_id: str) -> None:
@@ -43,13 +39,8 @@ def leave_channel(channel_id: str) -> None:
         "channelId": channel_id
     }
 
-    headers: dict = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {BOT_ACCESS_TOKEN}"
-    }
-
     r: requests.Response = requests.post(
-        url, data=json.dumps(data), headers=headers)
+        url, data=json.dumps(data), headers=BASIC_HEADERS)
 
 
 __all__ = ["post_to_traq", "join_channel", "leave_channel"]
