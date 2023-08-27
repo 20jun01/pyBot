@@ -62,6 +62,18 @@ def is_talk_cont_prefix(prefix: str) -> bool:
     return "cont" in prefix
 
 
+def is_add_setting_prefix(prefix: str) -> bool:
+    return prefix == "/add"
+
+def is_new_setting_prefix(prefix: str) -> bool:
+    return prefix == "/new"
+
+def is_del_setting_prefix(prefix: str) -> bool:
+    return prefix == "/del"
+
+def is_show_setting_prefix(prefix: str) -> bool:
+    return prefix == "/show"
+
 # TODO: fix path with relative
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FILE_PATH = os.path.join(BASE_DIR, "messages.json")
@@ -83,4 +95,4 @@ def get_message_text(keyword: str) -> str:
 
 
 __all__ = ["get_message_text",
-           "get_message_prefixes", "is_join_prefix", "is_leave_prefix", "is_talk_prefix", "is_talk_cont_prefix"]
+           "get_message_prefixes", "is_join_prefix", "is_leave_prefix", "is_talk_prefix", "is_talk_cont_prefix", "is_add_setting_prefix", "is_new_setting_prefix", "is_del_setting_prefix", "is_show_setting_prefix"]
