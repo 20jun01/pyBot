@@ -50,8 +50,8 @@ def message_created_response(body: dict) -> Response:
     return Response(status_code=204)
 
 
-def create_response_message(message_type: str) -> str:
-    return functions.get_message_text(message_type)
+def create_response_message(message_type: str, message_content: str) -> str:
+    return functions.get_message_text(message_type) + message_content
 
 
 __all__ = ["message_created_response"]
