@@ -40,7 +40,7 @@ def generate_mask(image_path_in_function: str) -> str:
     image4 = cv2.imread(os.getcwd() + image_path_in_function, cv2.IMREAD_UNCHANGED)
     image5 = cv2.imread("./" + image_path_in_function, cv2.IMREAD_UNCHANGED)
 
-    if image is None and image2 is None and image3 is None and image4 is None:
+    if image is None and image2 is None and image3 is None and image4 is None and image5 is None:
         raise ValueError(f"Failed to load image from path: {image_path_in_function}")
 
     # 画像のサイズを取得
