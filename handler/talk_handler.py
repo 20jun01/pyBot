@@ -39,6 +39,11 @@ def add_system_settings(settings: str):
         f.write(system_settings)
 
 
+def get_system_settings() -> str:
+    global system_settings
+    return system_settings
+
+
 def new_system_settings(settings: str):
     global system_settings
     system_settings = settings
@@ -103,4 +108,4 @@ def settings_personal(user: str) -> str:
 
 
 __all__ = ["generate_talk", "generate_talk_cont", "add_system_settings", "new_system_settings", "add_settings_personal",
-           "new_settings_personal", "generate_talk_personal", "generate_talk_cont_personal", "settings_personal"]
+           "new_settings_personal", "generate_talk_personal", "generate_talk_cont_personal", "settings_personal", "get_system_settings"]

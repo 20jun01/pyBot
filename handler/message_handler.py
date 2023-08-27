@@ -1,7 +1,7 @@
 from fastapi import Response
 from .talk_handler import *
 from .response_handler import *
-from functions import get_message_text
+from . import functions
 
 
 def message_created_response(body: dict) -> Response:
@@ -55,7 +55,7 @@ def message_created_response(body: dict) -> Response:
 
     elif message_sent == "/show":
         message = "私の中身はこんな感じだよ！！\n"
-        message += "`" + system_settings + "`"
+        message += "`" + get_system_settings() + "`"
         post_to_traq(message, body["message"]["channelId"])
 
     elif message_sent.startswith("/personal"):
@@ -111,7 +111,7 @@ def message_created_response(body: dict) -> Response:
 
 
 def create_response_message(message_type: str) -> str:
-    return get_message_text(message_type)
+    return functions.get_message_text(message_type)
 
 
 __all__ = ["message_created_response"]
