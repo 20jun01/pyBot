@@ -11,7 +11,7 @@ inc = 0
 async def generate_image(prompt: str):
     return await open_ai.image_generate(prompt)
 
-async def edit_image(message: str, channel_id: str) -> (str, bool):
+def edit_image(message: str, channel_id: str) -> (str, bool):
     file_ids = get_channel_file_ids(channel_id)
     prompt = message.replace("[添付ファイル]", "")
 
