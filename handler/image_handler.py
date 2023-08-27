@@ -11,20 +11,20 @@ inc = 0
 async def generate_image(prompt: str):
     return await open_ai.image_generate(prompt)
 
-def edit_image(message: str, channel_id: str) -> (str, bool):
+async def edit_image(message: str, channel_id: str) -> (str, bool):
     file_ids = get_channel_file_ids(channel_id)
     prompt = message.replace("[添付ファイル]", "")
-    
+
     if len(file_ids) == 0:
         return "何をすればいいのかな？", False
-    
-    file_url = get_file_url(file_ids[-1])
-    image_path = image_util.save_image_from_url_without_name(file_url)
-    mask_path = generate_mask(image_path)
-    return open_ai.image_edit(image_path, mask_path, prompt), True
 
-def generate_mask(image_path: str) -> str:
-    image = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)
+    file_url = get_file_url(file_ids[-1])
+    image_path_in_function = image_util.save_image_from_url_without_name(file_url)
+    mask_path = generate_mask(image_path_in_function)
+    return open_ai.image_edit(image_path_in_function, mask_path, prompt), True
+
+def generate_mask(image_path_in_function: str) -> str:
+    image = cv2.imread("functions/" + image_path_in_function, cv2.IMREAD_UNCHANGED)
 
     # 画像のサイズを取得
     height, width, _ = image.shape
