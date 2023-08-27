@@ -1,6 +1,6 @@
 from fastapi import Response
-from talk_handler import *
-from response_handler import *
+from .talk_handler import *
+from .response_handler import *
 from functions import get_message_text
 
 
