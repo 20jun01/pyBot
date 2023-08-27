@@ -54,7 +54,7 @@ async def message_created_response(body: dict) -> Response:
         message_content = "https://q.trap.jp/files/" + post_file(image_path, channel_id)
 
     elif functions.is_image_edit_prefix(prefix):
-        image_url, is_succeed = edit_image(message_truthy)
+        image_url, is_succeed = edit_image(message_truthy, channel_id)
         if is_succeed:
             image_path = functions.save_image_from_url_without_name(image_url)
             message_content = "https://q.trap.jp/files/" + post_file(image_path, channel_id)
