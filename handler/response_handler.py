@@ -2,12 +2,11 @@ import json
 import requests
 import os
 
-# 環境変数からaccess tokenを読み込む*1
 BOT_ACCESS_TOKEN = os.environ["BOT_ACCESS_TOKEN"]
 TRAQ_API_URL = os.environ["TRAQ_URL"]
 BOT_ID = os.environ["BOT_ID"]
 
-# textをchannel_idに投稿する関数*3
+
 def post_to_traq(text: str, channel_id: str) -> None:
     url: str = f"{TRAQ_API_URL}/channels/{channel_id}/messages"
     data: dict = {
@@ -16,15 +15,13 @@ def post_to_traq(text: str, channel_id: str) -> None:
     }
     headers: dict = {
         "Content-Type": "application/json",
-        # BOTからのtraQへのリクエストにはaccess tokenが必要*1
         "Authorization": f"Bearer {BOT_ACCESS_TOKEN}"
     }
     r: requests.Response = requests.post(
         url, data=json.dumps(data), headers=headers)
     response_body = r.json()
-    print(response_body)
 
-# channel_idに参加する関数*4
+
 def join_channel(channel_id: str) -> None:
     url: str = f"{TRAQ_API_URL}/bots/{BOT_ID}/actions/join"
     data: dict = {
@@ -39,7 +36,7 @@ def join_channel(channel_id: str) -> None:
     r: requests.Response = requests.post(
         url, data=json.dumps(data), headers=headers)
 
-# channel_idから退出する関数*5
+
 def leave_channel(channel_id: str) -> None:
     url: str = f"{TRAQ_API_URL}/bots/{BOT_ID}/actions/leave"
     data: dict = {
@@ -53,3 +50,6 @@ def leave_channel(channel_id: str) -> None:
 
     r: requests.Response = requests.post(
         url, data=json.dumps(data), headers=headers)
+
+
+__all__ = ["post_to_traq", "join_channel", "leave_channel"]

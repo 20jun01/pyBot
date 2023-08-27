@@ -30,3 +30,5 @@ def completion(new_message_text:str, settings_text:str = '', past_messages:list 
     past_messages.append(response_message)
     response_message_text = result.choices[0].message.content
     return response_message_text, past_messages
+
+__all__ = ["completion"]

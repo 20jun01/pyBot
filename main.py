@@ -1,16 +1,20 @@
-from fastapi import FastAPI, HTTPException, Request, Response
+from fastapi import FastAPI, HTTPException, Request, Response, status
 from handler import verification_handler, event_handler
+from models import HealthCheck
 
 app = FastAPI()
 
-@app.get("/")
-async def root():
-    print("Hello World")
-    return {"message": "Hello World"}
+@app.get("/",
+    tags=["healthcheck"],
+    summary="Perform a Health Check",
+    response_description="Return HTTP Status Code 200 (OK)",
+    status_code=status.HTTP_200_OK,
+    response_model=HealthCheck,
+)
+async def get_health() -> HealthCheck:
+    return HealthCheck(status="OK")
 
 @app.post("/")
 async def root(request: Request):
-    print(request)
     event = verification_handler.verification_handler(request.headers)
-    print(event)
     return event_handler.event_handler(event, await request.json())
