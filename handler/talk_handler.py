@@ -64,5 +64,5 @@ def talk_handler_personal(past_messages: str, message: str, user: str):
     return new_message, messages
 
 
-__all__ = ["generate_talk", "add_system_settings", "new_system_settings", "add_settings_personal",
-           "new_settings_personal", "get_system_settings"]
+__all__ = ["generate_talk", "add_system_settings",
+           "new_system_settings", "get_system_settings"]
