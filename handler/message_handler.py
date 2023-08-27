@@ -18,6 +18,7 @@ async def message_created_response(body: dict) -> Response:
     is_personal, prefix, message_truthy = functions.get_message_prefixes(
         message_sent)
     message_content = ""
+    print (is_personal, prefix, message_truthy)
 
     if functions.is_join_prefix(prefix):
         join_channel(channel_id)
