@@ -25,8 +25,10 @@ def edit_image(message: str, channel_id: str) -> (str, bool):
     return open_ai.image_edit(image_path_in_function, mask_path, prompt), True
 
 def generate_mask(image_path_in_function: str) -> str:
+    base_dir = os.path.dirname(os.path.abspath(image_path_in_function))
+    file_path = os.path.join(base_dir, image_path_in_function)
     # 画像を読み込む
-    image = Image.open(image_path_in_function)
+    image = Image.open(file_path)
     if image is None:
         return "これなに？"
 
