@@ -29,7 +29,7 @@ def get_channel_file_ids(channel_id: str) -> list:
 
 
 def get_file_url(file_id: str) -> str:
-    return "https://q.trap.jp/files/" + file_id + "/thumbnail"
+    return "https://q.trap.jp/api/v3/files/" + file_id + "/thumbnail"
 
 
 def post_file(file_path: str, channel_id: str) -> str:
