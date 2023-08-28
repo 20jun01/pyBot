@@ -1,9 +1,9 @@
 from dotenv import load_dotenv
 
 load_dotenv()
-from models import HealthCheck, ImageGenerateRequest
+from models import HealthCheck, ImageGenerateRequest, ImageEditRequest
 import handler
-from fastapi import FastAPI, HTTPException, Request, Response, status
+from fastapi import FastAPI, Request, status, APIRouter
 
 
 app = FastAPI()
@@ -25,7 +25,21 @@ async def root(request: Request):
     event = handler.verification_handler(request.headers)
     return await handler.event_handler(event, await request.json())
 
+open_ai_router = APIRouter(
+    prefix="/openai",
+    tags=["openai"],
+)
+open_ai_image_router = APIRouter(
+    prefix="/image",
+)
 
-@app.post("/openai/image/gen")
+@open_ai_image_router.post("/gen")
 async def openai_image_gen(request: ImageGenerateRequest):
     return await handler.image_handler.generate_image(request.prompt)
+
+@open_ai_image_router.post("/edit")
+async def openai_image_edit(request: ImageEditRequest):
+    return handler.image_handler.edit_image_from_url(request.image_url, request.prompt)
+
+open_ai_router.include_router(open_ai_image_router)
+app.include_router(open_ai_router)

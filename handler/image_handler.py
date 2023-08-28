@@ -2,13 +2,18 @@ from .functions import open_ai, image_util
 from PIL import Image, ImageDraw
 import numpy as np
 import random
-from .response_handler import get_channel_file_ids, get_file_url
+from .response_handler import get_channel_file_ids, get_file_url, get_headers_to_traq
 
 default_file_name = "mask"
 inc = 0
 
 async def generate_image(prompt: str):
     return await open_ai.image_generate(prompt)
+
+def edit_image_from_url(image_url: str, prompt: str) -> str:
+    image_path = image_util.save_image_from_url_without_name_with_login(image_url)
+    mask_path = generate_mask(image_path)
+    return open_ai.image_edit(image_path, mask_path, prompt)
 
 def edit_image(message: str, channel_id: str) -> (str, bool):
     file_ids = get_channel_file_ids(channel_id)
@@ -18,13 +23,12 @@ def edit_image(message: str, channel_id: str) -> (str, bool):
         return "何をすればいいのかな？", False
 
     file_url = get_file_url(file_ids[0])
-    print(file_url)
-    image_path_in_function = image_util.save_image_from_url_without_name(file_url)
-    print(image_path_in_function)
+    image_path_in_function = image_util.save_image_from_url_without_name_with_login(file_url)
     mask_path = generate_mask(image_path_in_function)
     return open_ai.image_edit(image_path_in_function, mask_path, prompt), True
 
 def generate_mask(image_path_in_function: str) -> str:
+    global inc
     base_dir = os.path.dirname(os.path.abspath(image_path_in_function))
     file_path = os.path.join(base_dir, image_path_in_function)
     # 画像を読み込む
@@ -67,4 +71,4 @@ def find_file(start_directory, target_file_name):
             return os.path.join(root, target_file_name)
     return None
 
-__all__ = ['generate_image', 'edit_image']
+__all__ = ['generate_image', 'edit_image', 'edit_image_from_url']

@@ -11,6 +11,9 @@ BASIC_HEADERS: dict = {
     "Authorization": f"Bearer {BOT_ACCESS_TOKEN}"
 }
 
+def get_headers_to_traq() -> dict:
+    return BASIC_HEADERS
+
 def get_channel_file_ids(channel_id: str) -> list:
     url: str = f"{TRAQ_API_URL}/files"
     query: dict = {
@@ -26,7 +29,7 @@ def get_channel_file_ids(channel_id: str) -> list:
 
 
 def get_file_url(file_id: str) -> str:
-    return "https://q.trap.jp/files/" + file_id
+    return "https://q.trap.jp/files/" + file_id + "/thumbnail"
 
 
 def post_file(file_path: str, channel_id: str) -> str:
