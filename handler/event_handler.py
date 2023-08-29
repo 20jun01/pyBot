@@ -1,5 +1,5 @@
 from fastapi import Response, HTTPException
-from .message_handler import message_created_response
+from ..usecases.message_usecase import message_created_response
 
 
 async def event_handler(event: str, body: dict) -> Response:

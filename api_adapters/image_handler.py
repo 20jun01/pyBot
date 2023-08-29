@@ -1,8 +1,9 @@
-from .functions import open_ai, image_util
+from ..apis import open_ai
+from ..domains import image_util
 from PIL import Image, ImageDraw
 import numpy as np
 import random
-from .response_handler import get_channel_file_ids, get_file_url, get_headers_to_traq
+from ..apis.traq import get_channel_file_ids, get_file_url, get_headers_to_traq
 
 default_file_name = "mask"
 inc = 0

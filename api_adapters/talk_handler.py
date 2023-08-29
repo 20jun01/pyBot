@@ -1,4 +1,4 @@
-from .functions import open_ai
+from ..apis import open_ai
 
 system_settings = ""
 

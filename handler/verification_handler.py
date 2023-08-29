@@ -3,7 +3,7 @@ from fastapi import HTTPException
 
 verificationToken = os.getenv("VERIFICATION_TOKEN")
 
-
+# TODO: middleware的に作る
 def verification_handler(headers) -> str:
     try:
         event = headers["X-TRAQ-BOT-EVENT"]

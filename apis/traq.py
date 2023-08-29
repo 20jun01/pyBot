@@ -31,6 +31,8 @@ def get_channel_file_ids(channel_id: str) -> list:
 def get_file_url(file_id: str) -> str:
     return "https://q.trap.jp/api/v3/files/" + file_id + "/thumbnail"
 
+def cast_file_id_to_message(file_id: str) -> str:
+    return "https://q.trap.jp/files/" + file_id
 
 def post_file(file_path: str, channel_id: str) -> str:
     url: str = f"{TRAQ_API_URL}/files"
@@ -74,4 +76,4 @@ def leave_channel(channel_id: str) -> None:
         url, data=json.dumps(data), headers=BASIC_HEADERS)
 
 
-__all__ = ["post_to_traq", "join_channel", "leave_channel", "post_file"]
+__all__ = ["post_to_traq", "join_channel", "leave_channel", "post_file", "cast_file_id_to_message"]
