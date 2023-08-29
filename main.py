@@ -33,13 +33,14 @@ open_ai_image_router = APIRouter(
     prefix="/image",
 )
 
+# TODO: routerをhandlerに渡して定義を移す(そうするとrequestの型を知る責務がなくなる)
 @open_ai_image_router.post("/gen")
 async def openai_image_gen(request: ImageGenerateRequest):
-    return await handler.image_handler.generate_image(request.prompt)
+    return await handler.generate_image(request.prompt)
 
 @open_ai_image_router.post("/edit")
 async def openai_image_edit(request: ImageEditRequest):
-    return handler.image_handler.edit_image_from_url(request.image_url, request.prompt)
+    return handler.edit_image_from_url(request.image_url, request.prompt)
 
 open_ai_router.include_router(open_ai_image_router)
 app.include_router(open_ai_router)
