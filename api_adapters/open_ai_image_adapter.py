@@ -8,13 +8,16 @@ from ..apis.traq import get_channel_file_ids, get_file_url, get_headers_to_traq
 default_file_name = "mask"
 inc = 0
 
+
 async def generate_image(prompt: str):
     return await open_ai.image_generate(prompt)
+
 
 def edit_image_from_url(image_url: str, prompt: str) -> str:
     image_path = image_util.save_image_from_url_without_name_with_login(image_url)
     mask_path = generate_mask(image_path)
     return open_ai.image_edit(image_path, mask_path, prompt)
+
 
 def edit_image(message: str, channel_id: str) -> (str, bool):
     file_ids = get_channel_file_ids(channel_id)
@@ -27,10 +30,13 @@ def edit_image(message: str, channel_id: str) -> (str, bool):
 
     file_url = get_file_url(file_ids[0])
     print(file_url)
-    image_path_in_function = image_util.save_image_from_url_without_name_with_login(file_url)
+    image_path_in_function = image_util.save_image_from_url_without_name_with_login(
+        file_url
+    )
     print(image_path_in_function)
     mask_path = generate_mask(image_path_in_function)
     return open_ai.image_edit(image_path_in_function, mask_path, prompt), True
+
 
 def generate_mask(image_path_in_function: str) -> str:
     global inc
@@ -49,13 +55,13 @@ def generate_mask(image_path_in_function: str) -> str:
         (0, 0, width // 2, height // 2),
         (width // 2, 0, width, height // 2),
         (0, height // 2, width // 2, height),
-        (width // 2, height // 2, width, height)
+        (width // 2, height // 2, width, height),
     ]
 
     x1, y1, x2, y2 = random.choice(segments)
 
     # 透過マスクを作成
-    mask = Image.new('L', (width, height), 255)
+    mask = Image.new("L", (width, height), 255)
     draw = ImageDraw.Draw(mask)
     draw.rectangle([x1, y1, x2, y2], fill=0)
 
@@ -68,7 +74,9 @@ def generate_mask(image_path_in_function: str) -> str:
     image.save(mask_image_path)
     return mask_image_path
 
+
 import os
+
 
 def find_file(start_directory, target_file_name):
     for root, dirs, files in os.walk(start_directory):
@@ -76,4 +84,5 @@ def find_file(start_directory, target_file_name):
             return os.path.join(root, target_file_name)
     return None
 
-__all__ = ['generate_image', 'edit_image', 'edit_image_from_url']
+
+__all__ = ["generate_image", "edit_image", "edit_image_from_url"]

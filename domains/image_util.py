@@ -17,10 +17,14 @@ def save_image_from_url_without_name(url: str) -> str:
     return file_path
 
 
-def save_image_from_url_without_name_with_login(url: str, query: dict = {"type": "image"}, HEADERS: dict = {
-                                                "Content-Type": "application/json",
-                                                "Authorization": f"Bearer {BOT_ACCESS_TOKEN}"
-                                                }) -> str:
+def save_image_from_url_without_name_with_login(
+    url: str,
+    query: dict = {"type": "image"},
+    HEADERS: dict = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {BOT_ACCESS_TOKEN}",
+    },
+) -> str:
     global inc
     HEADERS["accept"] = "image/png"
     response = requests.get(url, params=query, headers=HEADERS)

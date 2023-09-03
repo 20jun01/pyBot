@@ -12,12 +12,13 @@ with open("system_setting.txt", "r") as f:
 past_message = []
 
 
-def generate_talk(message: str, is_personal: bool, is_cont: bool, user: str = "") -> str:
+def generate_talk(
+    message: str, is_personal: bool, is_cont: bool, user: str = ""
+) -> str:
     global past_messages, personal_past_messages
     if is_personal:
         past_messages = personal_past_messages.get(user, []) if is_cont else []
-        new_message, messages = talk_handler_personal(
-            past_messages, message, user)
+        new_message, messages = talk_handler_personal(past_messages, message, user)
         personal_past_messages[user] = messages
     else:
         past_messages = past_messages if is_cont else []
@@ -27,8 +28,7 @@ def generate_talk(message: str, is_personal: bool, is_cont: bool, user: str = ""
 
 
 def talk_handler(past_messages: str, message: str):
-    new_message, messages = open_ai.completion(
-        message, system_settings, past_messages)
+    new_message, messages = open_ai.completion(message, system_settings, past_messages)
     return new_message, messages
 
 
@@ -44,7 +44,7 @@ def add_system_settings(settings: str, is_personal: bool, user: str = ""):
 
 def get_system_settings(is_personal: bool, user: str = "") -> str:
     global system_settings
-    return personal_settings.get(user, '') if is_personal else system_settings
+    return personal_settings.get(user, "") if is_personal else system_settings
 
 
 def new_system_settings(settings: str, is_personal: bool, user: str = ""):
@@ -60,9 +60,14 @@ def new_system_settings(settings: str, is_personal: bool, user: str = ""):
 def talk_handler_personal(past_messages: str, message: str, user: str):
     global personal_settings
     new_message, messages = open_ai.completion(
-        message, personal_settings.get(user, ""), past_messages)
+        message, personal_settings.get(user, ""), past_messages
+    )
     return new_message, messages
 
 
-__all__ = ["generate_talk", "add_system_settings",
-           "new_system_settings", "get_system_settings"]
+__all__ = [
+    "generate_talk",
+    "add_system_settings",
+    "new_system_settings",
+    "get_system_settings",
+]

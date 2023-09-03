@@ -18,30 +18,50 @@ import os
 # print(message)  # 出力: Hello, Alice!
 
 
-COMMAND_PREFIXES = ['/help', '@BOT_urturn_Talker /join',
-                    '/leave', '/cont', '/add', '/new', '/del', '/show', '/generate', '/edit']
-COMMAND_PREFIXES_PERSONAL = ['/personal cont', '/personal add',
-                             '/personal new', '/personal del', '/personal show', '/personal']
+COMMAND_PREFIXES = [
+    "/help",
+    "@BOT_urturn_Talker /join",
+    "/leave",
+    "/cont",
+    "/add",
+    "/new",
+    "/del",
+    "/show",
+    "/generate",
+    "/edit",
+]
+COMMAND_PREFIXES_PERSONAL = [
+    "/personal cont",
+    "/personal add",
+    "/personal new",
+    "/personal del",
+    "/personal show",
+    "/personal",
+]
 
 
 def get_message_prefixes(message_sent: str) -> (bool, str, str):
-    is_personal, prefix, message_truthy = get_message_prefixes_personal(
-        message_sent)
+    is_personal, prefix, message_truthy = get_message_prefixes_personal(message_sent)
     if not is_personal:
         prefix, message_truthy = get_message_prefixes_global(message_sent)
     return is_personal, prefix, message_truthy
 
+
 def get_message_prefixes_personal(message_sent: str) -> (bool, str, str):
     for prefix in COMMAND_PREFIXES_PERSONAL:
         if message_sent.startswith(prefix):
-            return True, prefix.replace("/personal", "").strip(), message_sent[len(prefix):]
+            return (
+                True,
+                prefix.replace("/personal", "").strip(),
+                message_sent[len(prefix) :],
+            )
     return False, "", message_sent
 
 
 def get_message_prefixes_global(message_sent: str) -> (str, str):
     for prefix in COMMAND_PREFIXES:
         if message_sent.startswith(prefix):
-            return prefix.replace("/", ""), message_sent[len(prefix):]
+            return prefix.replace("/", ""), message_sent[len(prefix) :]
     return "", message_sent
 
 
@@ -65,20 +85,26 @@ def is_talk_cont_prefix(prefix: str) -> bool:
 def is_add_setting_prefix(prefix: str) -> bool:
     return prefix == "/add".replace("/", "")
 
+
 def is_new_setting_prefix(prefix: str) -> bool:
     return prefix == "/new".replace("/", "")
+
 
 def is_del_setting_prefix(prefix: str) -> bool:
     return prefix == "/del".replace("/", "")
 
+
 def is_show_setting_prefix(prefix: str) -> bool:
     return prefix == "/show".replace("/", "")
+
 
 def is_image_generate_prefix(prefix: str) -> bool:
     return prefix == "/generate".replace("/", "")
 
+
 def is_image_edit_prefix(prefix: str) -> bool:
     return prefix == "/edit".replace("/", "")
+
 
 # TODO: fix path with relative
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -87,7 +113,7 @@ FILE_PATH = os.path.join(BASE_DIR, "messages.json")
 
 def load_messages(filename: str = FILE_PATH):
     print(os.getcwd())
-    with open(filename, 'r', encoding='utf-8') as file:
+    with open(filename, "r", encoding="utf-8") as file:
         return json.load(file)
 
 
@@ -100,5 +126,17 @@ def get_message_text(keyword: str) -> str:
     return messages.get(keyword, "ごめん、よくわからないかも")
 
 
-__all__ = ["get_message_text",
-           "get_message_prefixes", "is_join_prefix", "is_leave_prefix", "is_talk_prefix", "is_talk_cont_prefix", "is_add_setting_prefix", "is_new_setting_prefix", "is_del_setting_prefix", "is_show_setting_prefix", "is_image_generate_prefix", "is_image_edit_prefix"]
+__all__ = [
+    "get_message_text",
+    "get_message_prefixes",
+    "is_join_prefix",
+    "is_leave_prefix",
+    "is_talk_prefix",
+    "is_talk_cont_prefix",
+    "is_add_setting_prefix",
+    "is_new_setting_prefix",
+    "is_del_setting_prefix",
+    "is_show_setting_prefix",
+    "is_image_generate_prefix",
+    "is_image_edit_prefix",
+]

@@ -14,8 +14,7 @@ async def message_created_response(body: dict) -> Response:
     user = body["message"]["user"]["name"]
     display_name = body["message"]["user"]["displayName"]
 
-    is_personal, prefix, message_truthy = domains.get_message_prefixes(
-        message_sent)
+    is_personal, prefix, message_truthy = domains.get_message_prefixes(message_sent)
     message_content = ""
     print(is_personal, prefix, message_truthy)
 
@@ -28,11 +27,13 @@ async def message_created_response(body: dict) -> Response:
     # .replaceはgenerate側の責務な気もするけど、@を返したくないのはtraqへの投稿の責務なのでここでやる
     elif domains.is_talk_prefix(prefix):
         message_content = api_adapters.generate_talk(
-            message_truthy, is_personal, False, user).replace("@", "`@`")
+            message_truthy, is_personal, False, user
+        ).replace("@", "`@`")
 
     elif domains.is_talk_cont_prefix(prefix):
         message_content = api_adapters.generate_talk(
-            message_truthy, is_personal, True, user).replace("@", "`@`")
+            message_truthy, is_personal, True, user
+        ).replace("@", "`@`")
 
     elif domains.is_add_setting_prefix(prefix):
         api_adapters.add_system_settings(message_truthy, is_personal, user)
@@ -44,22 +45,21 @@ async def message_created_response(body: dict) -> Response:
         api_adapters.new_system_settings("", is_personal, user)
 
     elif domains.is_show_setting_prefix(prefix):
-        message_content = "`" + api_adapters.get_system_settings(is_personal, user) + "`"
+        message_content = (
+            "`" + api_adapters.get_system_settings(is_personal, user) + "`"
+        )
 
     elif domains.is_image_generate_prefix(prefix):
         image_url = await api_adapters.generate_image(message_truthy)
         image_path = domains.save_image_from_url_without_name(image_url)
         # TODO: trapのAPIURLなので適したところから取得する
-        message_content = cast_file_id_to_message(
-            post_file(image_path, channel_id))
+        message_content = cast_file_id_to_message(post_file(image_path, channel_id))
 
     elif domains.is_image_edit_prefix(prefix):
-        image_url, is_succeed = api_adapters.edit_image(
-            message_truthy, channel_id)
+        image_url, is_succeed = api_adapters.edit_image(message_truthy, channel_id)
         if is_succeed:
             image_path = domains.save_image_from_url_without_name(image_url)
-            message_content = cast_file_id_to_message(
-                post_file(image_path, channel_id))
+            message_content = cast_file_id_to_message(post_file(image_path, channel_id))
         else:
             prefix = ""
             message_content = image_url
