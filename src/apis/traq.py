@@ -111,7 +111,7 @@ async def add_tag_to(user_id: str, tag: str) -> dict:
     headers = {**BASIC_HEADERS, "Content-Type": "application/json"}
     response = requests.post(url, json={"tag": tag}, headers=headers)
     print(response)
-    return await response.json()
+    return response.json()
 
 
 def lock_tag(tagId: str) -> None:
