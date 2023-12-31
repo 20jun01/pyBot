@@ -95,8 +95,8 @@ def put_traq_message(message_id: str, content: str) -> None:
     r: requests.Response = requests.put(
         url, data=json.dumps(data), headers=BASIC_HEADERS
     )
-    response_body = r.json()
-    return response_body
+    # response_body = r.json()
+    return
 
 
 async def add_tag_to_me(tag: str) -> dict:
@@ -121,6 +121,12 @@ def lock_tag(tagId: str) -> None:
     return response_body
 
 
+def lock_tag_to(user_id: str, tagId: str) -> None:
+    url: str = f"{TRAQ_API_URL}/users/{user_id}/tags/{tagId}"
+    r: requests.Response = requests.patch(url, headers=BASIC_HEADERS)
+    response_body = r.json()
+    return response_body
+
 def get_user_info(userId: str) -> dict:
     url: str = f"{TRAQ_API_URL}/users/{userId}"
     r: requests.Response = requests.get(url, headers=BASIC_HEADERS)
@@ -139,5 +145,6 @@ __all__ = [
     "add_tag_to_me",
     "lock_tag",
     "get_user_info",
-    "add_tag_to"
+    "add_tag_to",
+    "lock_tag_to",
 ]
