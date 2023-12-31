@@ -106,12 +106,12 @@ async def add_tag_to_me(tag: str) -> dict:
     print(response)
     return response.json()
 
-def add_tag_to(user_id: str, tag: str) -> dict:
+async def add_tag_to(user_id: str, tag: str) -> dict:
     url = f"{TRAQ_API_URL}/users/{user_id}/tags"
     headers = {**BASIC_HEADERS, "Content-Type": "application/json"}
     response = requests.post(url, json={"tag": tag}, headers=headers)
     print(response)
-    return response.json()
+    return await response.json()
 
 
 def lock_tag(tagId: str) -> None:
