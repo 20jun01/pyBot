@@ -6,7 +6,7 @@ class TalkResponse(BaseModel):
 
 
 class HealthCheck(BaseModel):
-    status: str = "OK"
+    status: str
 
 
 __all__ = ["TalkResponse", "HealthCheck"]
