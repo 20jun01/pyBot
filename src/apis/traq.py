@@ -104,6 +104,7 @@ async def add_tag_to_me(tag: str) -> dict:
     r: requests.Response = await requests.post(
         url, data=json.dumps({"tag": tag}), headers=BASIC_HEADERS
     )
+    print(r)
     response_body = await r.json()
     return response_body
 
