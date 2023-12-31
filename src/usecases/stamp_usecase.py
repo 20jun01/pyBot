@@ -9,12 +9,12 @@ async def message_stamp_updated_response(body: dict):
             pass
         elif body["stamps"][0]["stampId"] == "dbcc7871-efef-4d6d-a2c6-b0f187f7b936" and body["stamps"][0]["count"] == 1:
             print("あけおめ!!")
-            # stamp_user = get_user_info(body["stamps"][0]["userId"])
-            # post_to_traq("あけおめ!! @" + stamp_user["name"] + "https://q.trap.jp/files/9b376658-7633-47e5-9147-5fd0aca0bd55", "0b725923-2e45-4816-b1f5-8eac5dc74fec")
+            stamp_user = get_user_info(body["stamps"][0]["userId"])
+            post_to_traq("あけおめ!! @" + stamp_user["name"] + " https://q.trap.jp/files/9b376658-7633-47e5-9147-5fd0aca0bd55", "0b725923-2e45-4816-b1f5-8eac5dc74fec")
+            res = await add_tag_to("b8c43ab5-21c8-4dee-ba7c-d515584039da", "あけおめ!! " + stamp_user["name"] + " 2024")
+            print(res)
+            lock_tag_to("b8c43ab5-21c8-4dee-ba7c-d515584039da", res["tagId"])
 
     # print(get_traq_message("cead5be4-6dc2-465c-90d3-5a985b6e4689"))
     # put_traq_message("cead5be4-6dc2-465c-90d3-5a985b6e4689", "[](:omedetou:を押してね)あけおめ!!")
-    res = await add_tag_to("b8c43ab5-21c8-4dee-ba7c-d515584039da", "あけおめ!!")
-    print(res)
-    lock_tag_to("b8c43ab5-21c8-4dee-ba7c-d515584039da", res["tagId"])
     return
