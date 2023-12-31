@@ -100,13 +100,11 @@ def put_traq_message(message_id: str, content: str) -> None:
 
 
 async def add_tag_to_me(tag: str) -> dict:
-    url: str = f"{TRAQ_API_URL}/users/me/tags"
-    r: requests.Response = await requests.post(
-        url, data=json.dumps({"tag": tag}), headers=BASIC_HEADERS
-    )
-    print(r)
-    response_body = await r.json()
-    return response_body
+    url = f"{TRAQ_API_URL}/users/me/tags"
+    headers = {**BASIC_HEADERS, "Content-Type": "application/json"}
+    response = requests.post(url, json={"tag": tag}, headers=headers)
+    print(response)
+    return response.json()
 
 
 def lock_tag(tagId: str) -> None:
@@ -122,6 +120,7 @@ def get_user_info(userId: str) -> dict:
     response_body = r.json()
     return response_body
 
+
 __all__ = [
     "post_to_traq",
     "join_channel",
@@ -132,5 +131,5 @@ __all__ = [
     "put_traq_message",
     "add_tag_to_me",
     "lock_tag",
-    "get_user_info"
+    "get_user_info",
 ]
