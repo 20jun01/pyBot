@@ -2,8 +2,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 from fastapi import FastAPI, Request, status, APIRouter
-import handler
-from models import HealthCheck, ImageGenerateRequest, ImageEditRequest
+import src.handler
+from src.models import HealthCheck, ImageGenerateRequest, ImageEditRequest
 
 
 app = FastAPI()
