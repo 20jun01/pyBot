@@ -106,6 +106,7 @@ async def add_tag_to_me(tag: str) -> dict:
     print(response)
     return response.json()
 
+
 async def add_tag_to(user_id: str, tag: str) -> dict:
     url = f"{TRAQ_API_URL}/users/{user_id}/tags"
     headers = {**BASIC_HEADERS, "Content-Type": "application/json"}
@@ -123,10 +124,13 @@ def lock_tag(tagId: str) -> None:
 
 def lock_tag_to(user_id: str, tagId: str) -> None:
     url: str = f"{TRAQ_API_URL}/users/{user_id}/tags/{tagId}"
-    r: requests.Response = requests.patch(url, headers=BASIC_HEADERS)
+    r: requests.Response = requests.patch(
+        url, json={"isLocked": True}, headers=BASIC_HEADERS
+    )
     # response_body = r.json()
     # return response_body
     return
+
 
 def get_user_info(userId: str) -> dict:
     url: str = f"{TRAQ_API_URL}/users/{userId}"
