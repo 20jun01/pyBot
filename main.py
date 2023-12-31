@@ -18,13 +18,13 @@ app = FastAPI()
     response_model=HealthCheck,
 )
 async def get_health() -> HealthCheck:
-    return HealthCheck(status="OK")
+    return None
 
 
 @app.post("/")
 async def root(request: Request):
-    event = handler.verification_handler(request.headers)
-    return await handler.event_handler(event, await request.json())
+    event = src.handler.verification_handler(request.headers)
+    return await src.handler.event_handler(event, await request.json())
 
 
 open_ai_router = APIRouter(
@@ -41,12 +41,12 @@ open_ai_image_router = APIRouter(
 
 @open_ai_image_router.post("/gen")
 async def openai_image_gen(request: ImageGenerateRequest):
-    return await handler.generate_image(request.prompt)
+    return await src.handler.generate_image(request.prompt)
 
 
 @open_ai_image_router.post("/edit")
 async def openai_image_edit(request: ImageEditRequest):
-    return handler.edit_image_from_url(request.image_url, request.prompt)
+    return src.handler.edit_image_from_url(request.image_url, request.prompt)
 
 
 open_ai_router.include_router(open_ai_image_router)
