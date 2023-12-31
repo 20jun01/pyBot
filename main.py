@@ -13,8 +13,8 @@ app = FastAPI()
     "/",
     tags=["healthcheck"],
     summary="Perform a Health Check",
-    response_description="Return HTTP Status Code 200 (OK)",
-    status_code=status.HTTP_200_OK,
+    response_description="Return HTTP Status Code 204 (No Content)",
+    status_code=status.HTTP_204_NO_CONTENT,
     response_model=HealthCheck,
 )
 async def get_health() -> HealthCheck:
