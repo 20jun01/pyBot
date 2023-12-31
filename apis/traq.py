@@ -82,10 +82,17 @@ def leave_channel(channel_id: str) -> None:
     )
 
 
+def get_traq_message(message_id: str) -> dict:
+    url: str = f"{TRAQ_API_URL}/messages/{message_id}"
+    r: requests.Response = requests.get(url, headers=BASIC_HEADERS)
+    response_body = r.json()
+    return response_body
+
 __all__ = [
     "post_to_traq",
     "join_channel",
     "leave_channel",
     "post_file",
     "cast_file_id_to_message",
+    "get_traq_message",
 ]
