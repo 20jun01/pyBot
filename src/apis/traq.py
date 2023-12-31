@@ -88,24 +88,32 @@ def get_traq_message(message_id: str) -> dict:
     response_body = r.json()
     return response_body
 
+
 def put_traq_message(message_id: str, content: str) -> None:
     url: str = f"{TRAQ_API_URL}/messages/{message_id}"
     data: dict = {"content": content}
-    r: requests.Response = requests.put(url, data=json.dumps(data), headers=BASIC_HEADERS)
+    r: requests.Response = requests.put(
+        url, data=json.dumps(data), headers=BASIC_HEADERS
+    )
     response_body = r.json()
     return response_body
 
-def add_tag_to_me(tag: str) -> dict:
+
+async def add_tag_to_me(tag: str) -> dict:
     url: str = f"{TRAQ_API_URL}/users/me/tags"
-    r: requests.Response = requests.post(url, data=json.dumps({"tag": tag}), headers=BASIC_HEADERS)
-    response_body = r.json()
+    r: requests.Response = await requests.post(
+        url, data=json.dumps({"tag": tag}), headers=BASIC_HEADERS
+    )
+    response_body = await r.json()
     return response_body
+
 
 def lock_tag(tagId: str) -> None:
     url: str = f"{TRAQ_API_URL}/users/me/tags/{tagId}"
     r: requests.Response = requests.patch(url, headers=BASIC_HEADERS)
     response_body = r.json()
     return response_body
+
 
 __all__ = [
     "post_to_traq",
