@@ -116,6 +116,12 @@ def lock_tag(tagId: str) -> None:
     return response_body
 
 
+def get_user_info(userId: str) -> dict:
+    url: str = f"{TRAQ_API_URL}/users/{userId}"
+    r: requests.Response = requests.get(url, headers=BASIC_HEADERS)
+    response_body = r.json()
+    return response_body
+
 __all__ = [
     "post_to_traq",
     "join_channel",
@@ -126,4 +132,5 @@ __all__ = [
     "put_traq_message",
     "add_tag_to_me",
     "lock_tag",
+    "get_user_info"
 ]

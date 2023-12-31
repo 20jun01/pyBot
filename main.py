@@ -23,7 +23,6 @@ async def get_health():
 @app.post("/")
 async def root(request: Request):
     event = src.handler.verification_handler(request.headers)
-    print(request.json())
     return await src.handler.event_handler(event, await request.json())
 
 
